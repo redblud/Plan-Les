@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ course.name }}
+{% endblock %}
+
+{% block body %}
+<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
+    <div style="flex: 1; margin-right: 2rem;">
+        <h1 class="header" style="text-align: left; margin-bottom: 0.5rem; border-bottom: none;">{{ course.name }}</h1>
+
+        <div
+            style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 0.9rem;">
+            <div><strong>When:</strong> {{ course.weekdays }} @ {{ course.time }}</div>
+            <div><strong>Mode:</strong> <span class="badge">{{ course.mode }}</span></div>
+            {% if course.platform %}
+            <div style="grid-column: span 2;"><strong>Location/Platform:</strong> {{ course.platform }}</div>
+            {% endif %}
+        </div>
+
+        <div style="color: #444; line-height: 1.6;">
+            {{ course.description | safe }}
+        </div>
+    </div>
+    <div style="min-width: 200px;">
+        <a href="/course/{{ course.id }}/add_lesson" class="btn btn-primary"
+            style="display: block; text-align: center; margin-bottom: 0.5rem;">Add Lesson</a>
+        <a href="/" class="btn" style="background-color: #ddd; display: block; text-align: center;">Back to
+            Dashboard</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Lessons</h3>
+    {% if lessons %}
+    <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+        <thead>
+            <tr style="border-bottom: 2px solid #eee; text-align: left;">
+                <th style="padding: 10px;">Date</th>
+                <th style="padding: 10px;">Title</th>
+                <th style="padding: 10px;">Topic</th>
+                <th style="padding: 10px;">Status</th>
+                <th style="padding: 10px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lesson in lessons %}
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 10px;">{{ lesson.date }}</td>
+                <td style="padding: 10px;"><strong>{{ lesson.title }}</strong></td>
+                <td style="padding: 10px;">{{ lesson.topic }}</td>
+                <td style="padding: 10px;">
+                    {% if lesson.status == 'Completed' %}
+                    <span style="color: green;">✓ Completed</span>
+                    {% else %}
+                    <span style="color: orange;">⚠ Planned</span>
+                    {% endif %}
+                </td>
+                <td style="padding: 10px;">
+                    <!-- Toggle Status logic could go here -->
+                    {% if lesson.private_notes %}
+                    <details>
+                        <summary style="cursor: pointer; color: var(--primary-color);">Notes</summary>
+                        <p
+                            style="font-size: 0.9em; color: #555; padding: 5px; background: #f9f9f9; border-radius: 4px;">
+                            {{ lesson.private_notes }}</p>
+                    </details>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="text-align: center; margin-top: 1rem;">No lessons planned yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

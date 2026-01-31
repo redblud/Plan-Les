@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block body %}
+<h1 class="header">Create an Account</h1>
+
+<form action="/register" method="post" class="card">
+    <div class="form-group">
+        <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text"
+            required>
+    </div>
+    <div class="form-group">
+        <input class="form-control" name="password" placeholder="Password" type="password" required>
+    </div>
+    <div class="form-group">
+        <input class="form-control" name="confirmation" placeholder="Confirm Password" type="password" required>
+    </div>
+    <button class="btn btn-primary" style="width: 100%;" type="submit">Register</button>
+</form>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Add Lesson
+{% endblock %}
+
+{% block body %}
+<h1 class="header">Add Lesson to {{ course.name }}</h1>
+
+<form action="/course/{{ course.id }}/add_lesson" method="post" class="card">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input autocomplete="off" autofocus class="form-control" id="title" name="title" placeholder="e.g. Lecture 1"
+            type="text" required>
+    </div>
+    <div class="form-group">
+        <label for="topic">Topic</label>
+        <input class="form-control" id="topic" name="topic" placeholder="e.g. Iteration" type="text">
+    </div>
+    <div class="form-group">
+        <label for="date">Date</label>
+        <input class="form-control" id="date" name="date" type="date" required>
+    </div>
+    <div class="form-group">
+        <label for="private_notes">Private Notes</label>
+        <textarea class="form-control" id="private_notes" name="private_notes" placeholder="Notes for yourself..."
+            rows="3"></textarea>
+    </div>
+    <button class="btn btn-primary" style="width: 100%;" type="submit">Add Lesson</button>
+</form>
+{% endblock %}

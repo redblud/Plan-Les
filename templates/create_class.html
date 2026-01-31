@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Create Class
+{% endblock %}
+
+{% block body %}
+<h1 class="header">Create a New Class</h1>
+
+<form action="/create_class" method="post" class="card">
+    <div class="form-group">
+        <label for="name">Class Name</label>
+        <input autocomplete="off" autofocus class="form-control" id="name" name="name" placeholder="e.g. CS50x"
+            type="text" required>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+            <label for="weekdays">Weekdays</label>
+            <input class="form-control" id="weekdays" name="weekdays" placeholder="e.g. Mon, Wed, Fri" type="text">
+        </div>
+        <div class="form-group">
+            <label for="time">Time</label>
+            <input class="form-control" id="time" name="time" type="time">
+        </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+            <label for="mode">Mode</label>
+            <select class="form-control" id="mode" name="mode">
+                <option value="Offline">Offline</option>
+                <option value="Online">Online</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="platform">Platform / Location</label>
+            <input class="form-control" id="platform" name="platform" placeholder="e.g. Room 304 or Zoom Link"
+                type="text">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input type="hidden" name="description" id="hidden_description">
+        <div id="editor-container" style="height: 200px; background: white;"></div>
+    </div>
+
+    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" type="submit">Create Class</button>
+</form>
+
+<script>
+    var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        placeholder: 'Compose your course description...',
+    });
+
+    var form = document.querySelector('form');
+    form.onsubmit = function () {
+        var description = document.querySelector('input[name=description]');
+        description.value = quill.root.innerHTML;
+    };
+</script>
+{% endblock %}

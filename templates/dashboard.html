@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block body %}
+<h1 class="header">Your Dashboard</h1>
+
+<div class="card">
+    <h2>Welcome to Plan Les</h2>
+    <p>Manage your courses and lessons efficiently.</p>
+
+    <!-- Course list -->
+    <div id="course-list">
+        {% if courses %}
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+            {% for course in courses %}
+            <div class="card" style="margin-bottom: 0; border-left: 5px solid var(--primary-color);">
+                <h3>{{ course.name }}</h3>
+                <div style="font-size: 0.9rem; color: #555; margin-bottom: 10px;">
+                    {{ course.description | safe }}
+                </div>
+                <a href="/course/{{ course.id }}" class="btn btn-primary" style="margin-top: 10px;">View Lessons</a>
+            </div>
+            {% endfor %}
+        </div>
+        <div style="margin-top: 2rem; text-align: center;">
+            <a href="/create_class" class="btn btn-primary">Create Another Class</a>
+        </div>
+        {% else %}
+        <div style="text-align: center; margin-top: 2rem;">
+            <p>You don't have any classes yet.</p>
+            <a href="/create_class" class="btn btn-primary">Create a New Class</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
