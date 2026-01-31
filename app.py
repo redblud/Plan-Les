@@ -35,6 +35,51 @@ def query_db(query, args=(), one=False):
     get_db().commit() # Commit by default for simplicity in this project scope
     return (rv[0] if rv else None) if one else rv
 
+def init_tables():
+    """Initialize tables if they don't exist"""
+    db = get_db()
+    cursor = db.cursor()
+    # Create users table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            hash TEXT NOT NULL
+        );
+    """)
+    # Create courses table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS courses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            name TEXT NOT NULL,
+            description TEXT,
+            weekdays TEXT,
+            time TEXT,
+            mode TEXT,
+            platform TEXT,
+            FOREIGN KEY(user_id) REFERENCES users(id)
+        );
+    """)
+    # Create lessons table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS lessons (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            course_id INTEGER NOT NULL,
+            title TEXT NOT NULL,
+            topic TEXT,
+            date TEXT,
+            private_notes TEXT,
+            status TEXT DEFAULT 'Planned',
+            FOREIGN KEY(course_id) REFERENCES courses(id)
+        );
+    """)
+    db.commit()
+
+# Initialize tables on startup
+with app.app_context():
+    init_tables()
+
 
 @app.after_request
 def after_request(response):
